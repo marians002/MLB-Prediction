@@ -226,5 +226,7 @@ def print_results(num_simulations, game_simulations):
         val += df_position_distances[1]
 
     # Print the average distance over all runs
-    return (val / ran)
+    return val / ran
 
+
+print_results(150, 400)
