@@ -1,6 +1,6 @@
 # Informe
 
-## Introduccion
+## Introducción
 
 ### Breve descripcion del proyecto.
 
@@ -22,18 +22,18 @@ El código comienza importando las bibliotecas necesarias: pandas para el manejo
 
 A continuacion explicaremos el codigo por funciones:
 
-* `load_data(s_date, e_date)` carga los datos de los partidos de un archivo CSV, filtra los partidos que ocurrieron entre las fechas dadas y organiza los resultados en un diccionario, particularmente nos interesan los partidos de la primera mitad de la temporada del 2021.
-* `get_history(team1, team2, results)` devuelve el número de partidos jugados y ganados entre dos equipos.
-* `simulate_injured_players(p=0.5)` simula si hay jugadores lesionados en un equipo, usando una distribucion binomial con  p = 0.5 siendo p la probabilidad  de exito.
-* `simulate_game(team1, team2, results, game_simulations)` simula u n partido entre dos equipos basándose en los resultados históricos y en la posibilidad de que haya jugadores lesionados, para hacer esto se calcula una tasa que llamamos "win_rate", esta nos servira para usar esta tasa en una simulacion de Monte Carlo y estimar el ganador de un partido.
-* `simulate_season(statistics, game_simulations)` simula una temporada completa, jugando cada equipo contra todos los demás, por cada par de equipos se simula el juego y se guardan los resultados.
-* `create_results_table(total_wins)` convierte los resultados de la simulación en un DataFrame de pandas y lo ordena por el número total de victorias.
-* `get_sim_results(num_simulations=30, game_simulations=100)` ejecuta la simulación de la temporada varias veces y devuelve los resultados en forma de tabla.
-* `get_real_results()` obtiene los resultados reales de la temporada.
-* `calculate_position_distances(df_real, df_simulated)` calcula la diferencia entre las posiciones reales y simuladas de cada equipo.
-* `print_results(num_simulations, game_simulations)` ejecuta todo el proceso varias veces y devuelve la distancia media entre las posiciones reales y simuladas de los equipos.
+* `load\data(s\date, e\date)` carga los datos de los partidos de un archivo CSV, filtra los partidos que ocurrieron entre las fechas dadas y organiza los resultados en un diccionario, particularmente nos interesan los partidos de la primera mitad de la temporada del 2021.
+* `get\history(team1, team2, results)` devuelve el número de partidos jugados y ganados entre dos equipos.
+* `simulate\injured\players(p=0.5)` simula si hay jugadores lesionados en un equipo, usando una distribucion binomial con  p = 0.5 siendo p la probabilidad  de exito.
+* `simulate\game(team1, team2, results, game\simulations)` simula u n partido entre dos equipos basándose en los resultados históricos y en la posibilidad de que haya jugadores lesionados, para hacer esto se calcula una tasa que llamamos "win\rate", esta nos servira para usar esta tasa en una simulacion de Monte Carlo y estimar el ganador de un partido.
+* `simulate\season(statistics, game\simulations)` simula una temporada completa, jugando cada equipo contra todos los demás, por cada par de equipos se simula el juego y se guardan los resultados.
+* `create\results\table(total\wins)` convierte los resultados de la simulación en un DataFrame de pandas y lo ordena por el número total de victorias.
+* `get\sim\results(num\simulations=30, game\simulations=100)` ejecuta la simulación de la temporada varias veces y devuelve los resultados en forma de tabla.
+* `get\real\results()` obtiene los resultados reales de la temporada.
+* `calculate\position\distances(df\real, df\simulated)` calcula la diferencia entre las posiciones reales y simuladas de cada equipo.
+* `print\results(num\simulations, game\simulations)` ejecuta todo el proceso varias veces y devuelve la distancia media entre las posiciones reales y simuladas de los equipos.
 
-El código termina llamando a `print_results(150, 400)`, lo que significa que se ejecutan 150 simulaciones de la temporada, cada una con 400 simulaciones de partidos, y se imprime la distancia media entre las posiciones reales y simuladas.
+El código termina llamando a `print\results(150, 400)`, lo que significa que se ejecutan 150 simulaciones de la temporada, cada una con 400 simulaciones de partidos, y se imprime la distancia media entre las posiciones reales y simuladas.
 
 ## Resultados y experimentos.
 
@@ -45,7 +45,7 @@ La simulación realizada ha mostrado una notable coincidencia con los resultados
 
 ### Interpretación de los Resultados.
 
-Para profundizar en la comparación entre los datos reales y los simulados, aplicamos la función `calculate_position_distances(df_real, df_simulated)`. Esta herramienta permite identificar y cuantificar las diferencias entre ambos conjuntos de datos, ofreciendo una visión clara sobre la precisión de nuestra simulación.
+Para profundizar en la comparación entre los datos reales y los simulados, aplicamos la función `calculate\position\distances(df\real, df\simulated)`. Esta herramienta permite identificar y cuantificar las diferencias entre ambos conjuntos de datos, ofreciendo una visión clara sobre la precisión de nuestra simulación.
 
 ### Hipótesis Derivada de los Resultados.
 
