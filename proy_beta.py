@@ -144,14 +144,16 @@ def create_results_table(total_wins):
     # Reset the index of the DataFrame
     df_total_wins.reset_index(drop=True, inplace=True)
 
-    # Print the DataFrame in a table-like format
-    # print(df_total_wins.to_string(index=False))
-
     return df_total_wins
 
 
+# Print the DataFrame in a table-like format
+def print_results_table(table):
+    print(table.to_string(index=False))
+
+
 # Get simulation results
-def get_sim_results(num_simulations=30, game_simulations=100):
+def get_sim_results(num_simulations=30, game_simulations=100, showTable=False):
     statistics = load_data('2021-01-01', '2021-06-31')
     # Initialize a dictionary to store the total number of wins for each team
     total_wins = {}
@@ -167,7 +169,10 @@ def get_sim_results(num_simulations=30, game_simulations=100):
                 total_wins[team] = 0
             total_wins[team] += 1
 
-    return create_results_table(total_wins)
+    table = create_results_table(total_wins)
+    if showTable:
+        print_results_table(table)
+    return table
 
 
 # Get real results
@@ -210,17 +215,13 @@ def calculate_position_distances(df_real, df_simulated):
 
 
 # Run the entire simulation many times to see what values are the optimal
-def print_results(num_simulations, game_simulations):
+def get_best_parameters(num_simulations, game_simulations):
     val = 0  # Initialize a variable to store the total distance
     ran = 10  # Set the number of runs
 
     # Run the simulation 'ran' times
     for _ in range(ran):
-        real_results = get_real_results()  # Get the real results
-        simulated_results = get_sim_results(num_simulations, game_simulations)  # Get the simulated results
-
-        # Calculate the position distances between the real and simulated results
-        df_position_distances = calculate_position_distances(real_results, simulated_results)
+        df_position_distances = run_simulation(num_simulations, game_simulations)
 
         # Add the total distance to 'val'
         val += df_position_distances[1]
@@ -229,4 +230,13 @@ def print_results(num_simulations, game_simulations):
     return val / ran
 
 
-print_results(150, 400)
+# Run the simulation
+def run_simulation(num_simulations, game_simulations, show_table=False):
+    real_results = get_real_results()  # Get the real results
+    simulated_results = get_sim_results(num_simulations, game_simulations, show_table)  # Get the simulated results
+
+    # Calculate the position distances between the real and simulated results
+    return calculate_position_distances(real_results, simulated_results)
+
+
+run_simulation(150, 400, True)
