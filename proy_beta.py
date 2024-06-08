@@ -1,6 +1,7 @@
 import pandas as pd
 import random
 import numpy as np
+from scipy.stats import spearmanr
 
 
 # Load data from teams
@@ -198,8 +199,13 @@ def get_real_results():
     return create_results_table(total_wins)
 
 
+
+###############
+### METRICS ###
+###############
+
 # Calculate the average distance between the real and simulated positions of each team over multiple runs.
-def calculate_position_distances(df_real, df_simulated):
+def position_distances(df_real, df_simulated):
     # Reset the index of both DataFrames to get the positions
     df_real = df_real.reset_index().rename(columns={'index': 'Real Position'})
     df_simulated = df_simulated.reset_index().rename(columns={'index': 'Simulated Position'})
@@ -211,9 +217,58 @@ def calculate_position_distances(df_real, df_simulated):
     df_merged['Position Distance'] = abs(df_merged['Real Position'] - df_merged['Simulated Position'])
 
     distance = df_merged['Position Distance'].sum()
-    return df_merged, distance
+    return distance
+
+def exact_positions(df_real, df_simulated):
+    # Reset the index of both DataFrames to get the positions
+    df_real = df_real.reset_index().rename(columns={'index': 'Real Position'})
+    df_simulated = df_simulated.reset_index().rename(columns={'index': 'Simulated Position'})
+
+    # Merge the two DataFrames on the 'Team' column
+    df_merged = pd.merge(df_real, df_simulated, on='Team')
+
+    # Create a new column that is True when the positions are the same and False otherwise
+    df_merged['Same Position'] = df_merged['Real Position'] == df_merged['Simulated Position']
+
+    # Count the number of True values in the 'Same Position' column
+    same_positions = df_merged['Same Position'].sum()
+
+    return same_positions
+
+# Count how many of the first n teams match their positions in the real and simulated results.
+def top_n(df_real, df_simulated, n):
+    # Reset the index of both DataFrames to get the positions
+    df_real = df_real.reset_index().rename(columns={'index': 'Real Position'})
+    df_simulated = df_simulated.reset_index().rename(columns={'index': 'Simulated Position'})
+
+    # Merge the two DataFrames on the 'Team' column
+    df_merged = pd.merge(df_real, df_simulated, on='Team')
+
+    # Filter the merged DataFrame to only include the first n teams
+    df_filtered = df_merged[df_merged['Real Position'] < n]
+
+    # Count the number of teams where the real and simulated positions match
+    matching_positions = sum(df_filtered['Real Position'] == df_filtered['Simulated Position'])
+
+    return matching_positions
 
 
+
+# Calculate the Spearman correlation between the real and simulated positions of each team.
+def spearman_correlation(df_real, df_simulated):
+    # Reset the index of both DataFrames to get the positions
+    df_real = df_real.reset_index().rename(columns={'index': 'Real Position'})
+    df_simulated = df_simulated.reset_index().rename(columns={'index': 'Simulated Position'})
+
+    # Merge the two DataFrames on the 'Team' column
+    df_merged = pd.merge(df_real, df_simulated, on='Team')
+
+    # Calculate the Spearman correlation between the positions in both results
+    correlation, _ = spearmanr(df_merged['Real Position'], df_merged['Simulated Position'])
+
+    return correlation
+
+    
 # Run the entire simulation many times to see what values are the optimal
 def get_best_parameters(num_simulations, game_simulations):
     val = 0  # Initialize a variable to store the total distance
@@ -236,7 +291,7 @@ def run_simulation(num_simulations, game_simulations, show_table=False):
     simulated_results = get_sim_results(num_simulations, game_simulations, show_table)  # Get the simulated results
 
     # Calculate the position distances between the real and simulated results
-    return calculate_position_distances(real_results, simulated_results)
+    return position_distances(real_results, simulated_results), exact_positions(real_results, simulated_results), top_n(real_results, simulated_results, 8), spearman_correlation(real_results, simulated_results)
 
 
-run_simulation(150, 400, True)
+print(run_simulation(50, 200, True))
