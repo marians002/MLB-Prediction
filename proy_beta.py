@@ -122,18 +122,18 @@ def simulate_game(team1, team2, results, game_simulations, count):
 # Simulate a season
 def simulate_season(statistics, game_simulations, count):
     resultados = []
-    thresholds = [] 
-
+   
     # For each possible matchup between two teams
     for team1 in statistics.keys():
         for team2 in statistics.keys():
             if team1 != team2:
                 # Simulate the game and save the result
-                ganador,threshold = simulate_game(team1, team2, statistics, game_simulations, count)
+                ganador, rate = simulate_game(team1, team2, statistics, game_simulations, count)
                 resultados.append(ganador)
-                thresholds.append(threshold)
+                
     print(".")
-    return resultados,max(thresholds)
+    print(rate)
+    return resultados, rate
 
    
 
