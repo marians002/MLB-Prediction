@@ -2,7 +2,7 @@ import pandas as pd
 import random
 import numpy as np
 from scipy.stats import spearmanr
-
+import math
 
 # Load data from teams
 def load_data(s_date, e_date):
@@ -84,7 +84,7 @@ def simulate_injured_players(p=0.5):
 
 
 # Simulate a game
-def simulate_game(team1, team2, results, game_simulations):
+def simulate_game(team1, team2, results, game_simulations, count):
     # Initialize win counters
     wins_team1 = 0
     wins_team2 = 0
@@ -112,26 +112,30 @@ def simulate_game(team1, team2, results, game_simulations):
             wins_team1 += 1
         else:
             wins_team2 += 1
-
+    current_volatility = ((win_rate * (1 - win_rate)) / (math.sqrt(count)))
     if wins_team1 > wins_team2:
-        return team1
+        return team1, current_volatility
     else:
-        return team2
+        return team2, current_volatility
 
 
 # Simulate a season
-def simulate_season(statistics, game_simulations):
+def simulate_season(statistics, game_simulations, count):
     resultados = []
+    thresholds = [] 
 
     # For each possible matchup between two teams
     for team1 in statistics.keys():
         for team2 in statistics.keys():
             if team1 != team2:
                 # Simulate the game and save the result
-                ganador = simulate_game(team1, team2, statistics, game_simulations)
+                ganador,threshold = simulate_game(team1, team2, statistics, game_simulations, count)
                 resultados.append(ganador)
+                thresholds.append(threshold)
+    print(".")
+    return resultados,max(thresholds)
 
-    return resultados
+   
 
 
 # Convert results to table format
@@ -154,16 +158,19 @@ def print_results_table(table):
 
 
 # Get simulation results
-def get_sim_results(num_simulations=30, game_simulations=100, showTable=False):
+def get_sim_results(epsilon, game_simulations=100, showTable=False):
     statistics = load_data('2021-01-01', '2021-06-31')
     # Initialize a dictionary to store the total number of wins for each team
     total_wins = {}
-
+    rate = 2
     # Run the simulation 'num_simulations' times
-    for _ in range(num_simulations):
-        # Run the simulation
-        simulation_results = simulate_season(statistics, game_simulations)
+    # for _ in range(num_simulations):
 
+    count = 0
+    while epsilon < rate: 
+        # Run the simulation
+        count+=1
+        simulation_results,rate = simulate_season(statistics, game_simulations, count)
         # Add the results to the total wins
         for team in simulation_results:
             if team not in total_wins:
@@ -286,12 +293,12 @@ def get_best_parameters(num_simulations, game_simulations):
 
 
 # Run the simulation
-def run_simulation(num_simulations, game_simulations, show_table=False):
+def run_simulation(epsilon, game_simulations, show_table=False):
     real_results = get_real_results()  # Get the real results
-    simulated_results = get_sim_results(num_simulations, game_simulations, show_table)  # Get the simulated results
+    simulated_results = get_sim_results(epsilon, game_simulations, show_table)  # Get the simulated results
 
     # Calculate the position distances between the real and simulated results
     return position_distances(real_results, simulated_results), exact_positions(real_results, simulated_results), top_n(real_results, simulated_results, 8), spearman_correlation(real_results, simulated_results)
 
 
-print(run_simulation(50, 200, True))
+print(run_simulation(0.010206207261596576, 200, True))
