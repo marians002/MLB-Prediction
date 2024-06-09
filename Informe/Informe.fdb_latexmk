@@ -1,8 +1,9 @@
 # Fdb version 4
-["pdflatex"] 1717638624.22951 "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" "Informe.pdf" "Informe" 1717638624.49706 0
+["pdflatex"] 1717899609.10073 "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" "Informe.pdf" "Informe" 1717899609.36747 0
   "/etc/texmf/web2c/texmf.cnf" 1684731669.91207 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" 1717638624.01523 6740 2c9f9d66609a14bdc0af5e737873cdf4 ""
+  "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" 1717899608.91112 7559 da9fc28ee2b28cf1daffcb3e6c9d59cb ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -70,11 +71,13 @@
   "/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty" 1698869629 10214 547fd4d29642cb7c80bf54b49d447f01 ""
   "/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty" 1700082560 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
+  "/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1636152094 2900 1537cc8184ad1792082cd229ecc269f4 ""
+  "/usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb" 1694560982.01367 136101 f533469f523533d38317ab5729d00c8a ""
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1715270380.30401 368426 99aa7317ad8123173d2e85930240aad7 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1715270385 6864678 45f8322a9cec10c08bfb51e9a059f36f ""
-  "Informe.aux" 1717638624.47023 1593 692b96e68e7cc5249d480c8440f07382 "pdflatex"
-  "Informe.tex" 1717638624.01523 6740 2c9f9d66609a14bdc0af5e737873cdf4 ""
+  "Informe.aux" 1717899609.33713 1593 692b96e68e7cc5249d480c8440f07382 "pdflatex"
+  "Informe.tex" 1717899608.91112 7559 da9fc28ee2b28cf1daffcb3e6c9d59cb ""
   (generated)
   "Informe.aux"
   "Informe.log"

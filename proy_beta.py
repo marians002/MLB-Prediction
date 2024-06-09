@@ -4,6 +4,7 @@ import numpy as np
 from scipy.stats import spearmanr
 import math
 
+
 # Load data from teams
 def load_data(s_date, e_date):
     # Load the CSV file
@@ -122,7 +123,8 @@ def simulate_game(team1, team2, results, game_simulations, count):
 # Simulate a season
 def simulate_season(statistics, game_simulations, count):
     resultados = []
-   
+    rate = 0.0
+
     # For each possible matchup between two teams
     for team1 in statistics.keys():
         for team2 in statistics.keys():
@@ -130,12 +132,8 @@ def simulate_season(statistics, game_simulations, count):
                 # Simulate the game and save the result
                 ganador, rate = simulate_game(team1, team2, statistics, game_simulations, count)
                 resultados.append(ganador)
-                
-    print(".")
-    print(rate)
-    return resultados, rate
 
-   
+    return resultados, rate
 
 
 # Convert results to table format
@@ -158,7 +156,7 @@ def print_results_table(table):
 
 
 # Get simulation results
-def get_sim_results(epsilon, game_simulations=100, showTable=False):
+def get_sim_results(epsilon, game_simulations=100, show_table=False):
     statistics = load_data('2021-01-01', '2021-06-31')
     # Initialize a dictionary to store the total number of wins for each team
     total_wins = {}
@@ -167,10 +165,10 @@ def get_sim_results(epsilon, game_simulations=100, showTable=False):
     # for _ in range(num_simulations):
 
     count = 0
-    while epsilon < rate: 
+    while epsilon < rate:
         # Run the simulation
-        count+=1
-        simulation_results,rate = simulate_season(statistics, game_simulations, count)
+        count += 1
+        simulation_results, rate = simulate_season(statistics, game_simulations, count)
         # Add the results to the total wins
         for team in simulation_results:
             if team not in total_wins:
@@ -178,7 +176,7 @@ def get_sim_results(epsilon, game_simulations=100, showTable=False):
             total_wins[team] += 1
 
     table = create_results_table(total_wins)
-    if showTable:
+    if show_table:
         print_results_table(table)
     return table
 
@@ -206,7 +204,6 @@ def get_real_results():
     return create_results_table(total_wins)
 
 
-
 ###############
 ### METRICS ###
 ###############
@@ -226,6 +223,7 @@ def position_distances(df_real, df_simulated):
     distance = df_merged['Position Distance'].sum()
     return distance
 
+
 def exact_positions(df_real, df_simulated):
     # Reset the index of both DataFrames to get the positions
     df_real = df_real.reset_index().rename(columns={'index': 'Real Position'})
@@ -241,6 +239,7 @@ def exact_positions(df_real, df_simulated):
     same_positions = df_merged['Same Position'].sum()
 
     return same_positions
+
 
 # Count how many of the first n teams match their positions in the real and simulated results.
 def top_n(df_real, df_simulated, n):
@@ -260,7 +259,6 @@ def top_n(df_real, df_simulated, n):
     return matching_positions
 
 
-
 # Calculate the Spearman correlation between the real and simulated positions of each team.
 def spearman_correlation(df_real, df_simulated):
     # Reset the index of both DataFrames to get the positions
@@ -275,22 +273,6 @@ def spearman_correlation(df_real, df_simulated):
 
     return correlation
 
-    
-# Run the entire simulation many times to see what values are the optimal
-def get_best_parameters(num_simulations, game_simulations):
-    val = 0  # Initialize a variable to store the total distance
-    ran = 10  # Set the number of runs
-
-    # Run the simulation 'ran' times
-    for _ in range(ran):
-        df_position_distances = run_simulation(num_simulations, game_simulations)
-
-        # Add the total distance to 'val'
-        val += df_position_distances[1]
-
-    # Print the average distance over all runs
-    return val / ran
-
 
 # Run the simulation
 def run_simulation(epsilon, game_simulations, show_table=False):
@@ -298,7 +280,25 @@ def run_simulation(epsilon, game_simulations, show_table=False):
     simulated_results = get_sim_results(epsilon, game_simulations, show_table)  # Get the simulated results
 
     # Calculate the position distances between the real and simulated results
-    return position_distances(real_results, simulated_results), exact_positions(real_results, simulated_results), top_n(real_results, simulated_results, 8), spearman_correlation(real_results, simulated_results)
+
+    pos_dist = position_distances(real_results, simulated_results)
+    ex_pos = exact_positions(real_results, simulated_results)
+    top = top_n(real_results, simulated_results, 8)
+    sp_corr = spearman_correlation(real_results, simulated_results)
+
+    results = [pos_dist, ex_pos, top, sp_corr]
+
+    return results
 
 
-print(run_simulation(0.010206207261596576, 200, True))
+epsilon = 0.010206207261596576
+game_simulations = 200
+show_table = False
+
+result = run_simulation(epsilon, game_simulations, show_table)
+
+print("\nResultados obtenidos con los parametros epsilon =", epsilon, " y simulaciones de juegos =", game_simulations)
+print("Position distances:", result[0])
+print("Exact positions:", result[1])
+print("Top-n:", result[2])
+print("Spearman correlation:", result[3])
