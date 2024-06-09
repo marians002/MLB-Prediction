@@ -3,6 +3,8 @@ import random
 import numpy as np
 from scipy.stats import spearmanr
 import math
+import matplotlib.pyplot as plt
+
 
 # Load data from teams
 def load_data(s_date, e_date):
@@ -122,7 +124,7 @@ def simulate_game(team1, team2, results, game_simulations, count):
 # Simulate a season
 def simulate_season(statistics, game_simulations, count):
     resultados = []
-   
+    
     # For each possible matchup between two teams
     for team1 in statistics.keys():
         for team2 in statistics.keys():
@@ -131,8 +133,6 @@ def simulate_season(statistics, game_simulations, count):
                 ganador, rate = simulate_game(team1, team2, statistics, game_simulations, count)
                 resultados.append(ganador)
                 
-    print(".")
-    print(rate)
     return resultados, rate
 
    
@@ -158,10 +158,20 @@ def print_results_table(table):
 
 
 # Get simulation results
-def get_sim_results(epsilon, game_simulations=100, showTable=False):
+def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histogram=True):
     statistics = load_data('2021-01-01', '2021-06-31')
     # Initialize a dictionary to store the total number of wins for each team
     total_wins = {}
+    for team in statistics:
+        total_wins[team] = 0
+    
+    total_spots = {}
+    for team in statistics:
+        total_spots[team] = {}
+        for spot in range(len(statistics)):
+            total_spots[team][spot] = 0
+            
+    
     rate = 2
     # Run the simulation 'num_simulations' times
     # for _ in range(num_simulations):
@@ -169,17 +179,44 @@ def get_sim_results(epsilon, game_simulations=100, showTable=False):
     count = 0
     while epsilon < rate: 
         # Run the simulation
+        simulation_table = {}
+        for team in statistics:
+            simulation_table[team] = 0
+        ranked_teams = []
         count+=1
         simulation_results,rate = simulate_season(statistics, game_simulations, count)
         # Add the results to the total wins
         for team in simulation_results:
-            if team not in total_wins:
-                total_wins[team] = 0
+            simulation_table[team] +=1
             total_wins[team] += 1
+            
+        for team, local_wins in simulation_table.items():
+            ranked_teams.append((team, local_wins))
+            
+        ranked_teams.sort(key=lambda x: x[1], reverse=True)
+        
+        for indx in range(len(ranked_teams)):
+            team = ranked_teams[indx][0]
+            total_spots[team][indx] += 1
 
     table = create_results_table(total_wins)
-    if showTable:
+    if show_table:
         print_results_table(table)
+        
+    if show_histogram:
+        # Create a histogram
+        for team in statistics:
+            team0 = team
+            break
+            
+        plt.bar(total_spots[team0].keys(), total_spots[team0].values(), color='b')
+
+        plt.xlabel('Spot')
+        plt.ylabel('Frequency')
+        plt.title('Histogram of Team Spots')
+
+        plt.show()
+    
     return table
 
 
