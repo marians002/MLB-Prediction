@@ -99,13 +99,8 @@ def simulate_game(team1, team2, results, game_simulations, count):
     injured_players_team2 = simulate_injured_players()
 
     # Calculate the win rate of team1 against team2
-    if games_played > 0:
-        numerator = games_won + injured_players_team2 - injured_players_team1
-        if numerator < 0:
-            numerator = 0
-        win_rate = numerator / games_played
-    else:
-        win_rate = 0.5  # Assume a 50% win rate if there are no historical game results
+    # Assume a 50% win rate if there are no historical game results
+    win_rate = max(games_won + injured_players_team2 - injured_players_team1, 0) / games_played if games_played > 0 else 0.5
 
     # Run the Monte Carlo simulation
     for _ in range(game_simulations):
@@ -114,7 +109,11 @@ def simulate_game(team1, team2, results, game_simulations, count):
             wins_team1 += 1
         else:
             wins_team2 += 1
+
+    # Calculate the current volatility using the formula for the standard deviation of a binomial distribution
     current_volatility = ((win_rate * (1 - win_rate)) / (math.sqrt(count)))
+
+    # Determine the winning team based on the number of wins
     if wins_team1 > wins_team2:
         return team1, current_volatility
     else:
@@ -156,40 +155,41 @@ def print_results_table(table):
     print(table.to_string(index=False))
 
 
-# Creates a histogram for the first team in the statistics dictionary
+# Creates a histogram for the first n teams in the statistics dictionary
 # using the total_spots data.
-# The histogram displays the frequency of each spot for the team.
-def create_histogram(statistics, total_spots):
+# The histogram displays the frequency of each spot for each team.
+def create_histogram(statistics, total_spots, num_teams):
     """
     Parameters:
     statistics (dict): A dictionary containing team statistics.
     total_spots (dict): A dictionary containing the total spots for each team.
-
+    teams_num (int): The number of teams to include in the histogram.
     """
-    # Get the first team from the statistics dictionary
-    team0 = list(statistics.keys())[7]
 
-    # Create a histogram
-    plt.figure(figsize=(10, 6))  # Increase the size of the figure
-    plt.bar(total_spots[team0].keys(), total_spots[team0].values(), color='b', label='Frequency of Spots')
+    for team in list(statistics.keys())[:num_teams]:
 
-    # Add labels and title
-    plt.xlabel('Spot', fontsize=14)  # Increase the font size
-    plt.ylabel('Frequency', fontsize=14)  # Increase the font size
-    plt.title('Histogram of Team Spots for ' + team0, fontsize=16)  # Add the team name to the title and increase the font size
+        # Create a histogram
+        plt.figure(figsize=(10, 6))  # Increase the size of the figure
+        plt.bar(total_spots[team].keys(), total_spots[team].values(), color='b', label='Frequency of Spots')
 
-    # Add grid for better readability
-    plt.grid(True)
+        # Add labels and title
+        plt.xlabel('Spot', fontsize=14)  # Increase the font size
+        plt.ylabel('Frequency', fontsize=14)  # Increase the font size
+        plt.title('Histogram of Team Spots for ' + team,
+                  fontsize=16)  # Add the team name to the title and increase the font size
 
-    # Add legend
-    plt.legend()
+        # Add grid for better readability
+        plt.grid(True)
 
-    # Show the plot
-    plt.show()
+        # Add legend
+        plt.legend()
+
+        # Show the plot
+        plt.show()
 
 
 # Get simulation results
-def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histogram=True):
+def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histogram=True, num_teams=5):
     statistics = load_data('2021-01-01', '2021-06-31')
     # Initialize a dictionary to store the total number of wins for each team
     total_wins = {}
@@ -203,8 +203,6 @@ def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histog
             total_spots[team][spot] = 0
 
     rate = 2
-    # Run the simulation 'num_simulations' times
-    # for _ in range(num_simulations):
 
     count = 0
     while epsilon < rate:
@@ -235,20 +233,19 @@ def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histog
             # Increment the corresponding index in the total_spots dictionary for the team
             total_spots[team][index] += 1
 
-        # Create a results table from the total_wins dictionary
-        table = create_results_table(total_wins)
+    # Create a results table from the total_wins dictionary
+    table = create_results_table(total_wins)
 
-        # If show_table is True, print the results table
-        if show_table:
-            print_results_table(table)
+    # If show_table is True, print the results table
+    if show_table:
+        print_results_table(table)
 
-        # If show_histogram is True, create a histogram using the statistics and total_spots dictionaries
-        if show_histogram:
-            create_histogram(statistics, total_spots)
+    # If show_histogram is True, create a histogram using the statistics and total_spots dictionaries
+    if show_histogram:
+        create_histogram(statistics, total_spots, num_teams)
 
-        # Return the results table
-        return table
-
+    # Return the results table
+    return table
 
 
 # Get real results
