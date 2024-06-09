@@ -124,7 +124,7 @@ def simulate_game(team1, team2, results, game_simulations, count):
 # Simulate a season
 def simulate_season(statistics, game_simulations, count):
     resultados = []
-    
+
     # For each possible matchup between two teams
     for team1 in statistics.keys():
         for team2 in statistics.keys():
@@ -132,10 +132,8 @@ def simulate_season(statistics, game_simulations, count):
                 # Simulate the game and save the result
                 ganador, rate = simulate_game(team1, team2, statistics, game_simulations, count)
                 resultados.append(ganador)
-                
-    return resultados, rate
 
-   
+    return resultados, rate
 
 
 # Convert results to table format
@@ -157,6 +155,38 @@ def print_results_table(table):
     print(table.to_string(index=False))
 
 
+# Creates a histogram for the first team in the statistics dictionary
+# using the total_spots data.
+# The histogram displays the frequency of each spot for the team.
+def create_histogram(statistics, total_spots):
+    """
+    Parameters:
+    statistics (dict): A dictionary containing team statistics.
+    total_spots (dict): A dictionary containing the total spots for each team.
+
+    """
+    # Get the first team from the statistics dictionary
+    team0 = list(statistics.keys())[0]
+
+    # Create a histogram
+    plt.figure(figsize=(10, 6))  # Increase the size of the figure
+    plt.bar(total_spots[team0].keys(), total_spots[team0].values(), color='b', label='Frequency of Spots')
+
+    # Add labels and title
+    plt.xlabel('Spot', fontsize=14)  # Increase the font size
+    plt.ylabel('Frequency', fontsize=14)  # Increase the font size
+    plt.title('Histogram of Team Spots for ' + team0, fontsize=16)  # Add the team name to the title and increase the font size
+
+    # Add grid for better readability
+    plt.grid(True)
+
+    # Add legend
+    plt.legend()
+
+    # Show the plot
+    plt.show()
+
+
 # Get simulation results
 def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histogram=True):
     statistics = load_data('2021-01-01', '2021-06-31')
@@ -164,60 +194,59 @@ def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histog
     total_wins = {}
     for team in statistics:
         total_wins[team] = 0
-    
+
     total_spots = {}
     for team in statistics:
         total_spots[team] = {}
         for spot in range(len(statistics)):
             total_spots[team][spot] = 0
-            
-    
+
     rate = 2
     # Run the simulation 'num_simulations' times
     # for _ in range(num_simulations):
 
     count = 0
-    while epsilon < rate: 
+    while epsilon < rate:
         # Run the simulation
         simulation_table = {}
         for team in statistics:
             simulation_table[team] = 0
         ranked_teams = []
-        count+=1
-        simulation_results,rate = simulate_season(statistics, game_simulations, count)
+        count += 1
+        simulation_results, rate = simulate_season(statistics, game_simulations, count)
         # Add the results to the total wins
         for team in simulation_results:
-            simulation_table[team] +=1
+            simulation_table[team] += 1
             total_wins[team] += 1
-            
+
+        # Iterate over the simulation_table dictionary
         for team, local_wins in simulation_table.items():
+            # Append each team and their local wins to the ranked_teams list
             ranked_teams.append((team, local_wins))
-            
+
+        # Sort the ranked_teams list in descending order based on the number of local wins
         ranked_teams.sort(key=lambda x: x[1], reverse=True)
-        
-        for indx in range(len(ranked_teams)):
-            team = ranked_teams[indx][0]
-            total_spots[team][indx] += 1
 
-    table = create_results_table(total_wins)
-    if show_table:
-        print_results_table(table)
-        
-    if show_histogram:
-        # Create a histogram
-        for team in statistics:
-            team0 = team
-            break
-            
-        plt.bar(total_spots[team0].keys(), total_spots[team0].values(), color='b')
+        # Iterate over the range of the length of the ranked_teams list
+        for index in range(len(ranked_teams)):
+            # Get the team name from the ranked_teams list
+            team = ranked_teams[index][0]
+            # Increment the corresponding index in the total_spots dictionary for the team
+            total_spots[team][index] += 1
 
-        plt.xlabel('Spot')
-        plt.ylabel('Frequency')
-        plt.title('Histogram of Team Spots')
+        # Create a results table from the total_wins dictionary
+        table = create_results_table(total_wins)
 
-        plt.show()
-    
-    return table
+        # If show_table is True, print the results table
+        if show_table:
+            print_results_table(table)
+
+        # If show_histogram is True, create a histogram using the statistics and total_spots dictionaries
+        if show_histogram:
+            create_histogram(statistics, total_spots)
+
+        # Return the results table
+        return table
 
 
 # Get real results
@@ -243,7 +272,6 @@ def get_real_results():
     return create_results_table(total_wins)
 
 
-
 ###############
 ### METRICS ###
 ###############
@@ -263,6 +291,7 @@ def position_distances(df_real, df_simulated):
     distance = df_merged['Position Distance'].sum()
     return distance
 
+
 def exact_positions(df_real, df_simulated):
     # Reset the index of both DataFrames to get the positions
     df_real = df_real.reset_index().rename(columns={'index': 'Real Position'})
@@ -278,6 +307,7 @@ def exact_positions(df_real, df_simulated):
     same_positions = df_merged['Same Position'].sum()
 
     return same_positions
+
 
 # Count how many of the first n teams match their positions in the real and simulated results.
 def top_n(df_real, df_simulated, n):
@@ -297,7 +327,6 @@ def top_n(df_real, df_simulated, n):
     return matching_positions
 
 
-
 # Calculate the Spearman correlation between the real and simulated positions of each team.
 def spearman_correlation(df_real, df_simulated):
     # Reset the index of both DataFrames to get the positions
@@ -312,7 +341,7 @@ def spearman_correlation(df_real, df_simulated):
 
     return correlation
 
-    
+
 # Run the entire simulation many times to see what values are the optimal
 def get_best_parameters(num_simulations, game_simulations):
     val = 0  # Initialize a variable to store the total distance
@@ -335,7 +364,8 @@ def run_simulation(epsilon, game_simulations, show_table=False):
     simulated_results = get_sim_results(epsilon, game_simulations, show_table)  # Get the simulated results
 
     # Calculate the position distances between the real and simulated results
-    return position_distances(real_results, simulated_results), exact_positions(real_results, simulated_results), top_n(real_results, simulated_results, 8), spearman_correlation(real_results, simulated_results)
+    return position_distances(real_results, simulated_results), exact_positions(real_results, simulated_results), top_n(
+        real_results, simulated_results, 8), spearman_correlation(real_results, simulated_results)
 
 
 print(run_simulation(0.010206207261596576, 200, True))
