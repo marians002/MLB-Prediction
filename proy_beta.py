@@ -167,7 +167,7 @@ def create_histogram(statistics, total_spots):
 
     """
     # Get the first team from the statistics dictionary
-    team0 = list(statistics.keys())[0]
+    team0 = list(statistics.keys())[7]
 
     # Create a histogram
     plt.figure(figsize=(10, 6))  # Increase the size of the figure
@@ -189,10 +189,19 @@ def create_histogram(statistics, total_spots):
 
 
 # Get simulation results
-def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histogram=False):
+def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histogram=True):
     statistics = load_data('2021-01-01', '2021-06-31')
     # Initialize a dictionary to store the total number of wins for each team
     total_wins = {}
+    for team in statistics:
+        total_wins[team] = 0
+
+    total_spots = {}
+    for team in statistics:
+        total_spots[team] = {}
+        for spot in range(len(statistics)):
+            total_spots[team][spot] = 0
+
     rate = 2
     # Run the simulation 'num_simulations' times
     # for _ in range(num_simulations):
@@ -200,20 +209,46 @@ def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histog
     count = 0
     while epsilon < rate:
         # Run the simulation
+        simulation_table = {}
+        for team in statistics:
+            simulation_table[team] = 0
+        ranked_teams = []
         count += 1
         simulation_results, rate = simulate_season(statistics, game_simulations, count)
         # Add the results to the total wins
         for team in simulation_results:
-            if team not in total_wins:
-                total_wins[team] = 0
+            simulation_table[team] += 1
             total_wins[team] += 1
 
-    table = create_results_table(total_wins)
-    if show_table:
-        print_results_table(table)
-    if show_histogram:
-        create_histogram(statistics, total_wins)
-    return table
+        # Iterate over the simulation_table dictionary
+        for team, local_wins in simulation_table.items():
+            # Append each team and their local wins to the ranked_teams list
+            ranked_teams.append((team, local_wins))
+
+        # Sort the ranked_teams list in descending order based on the number of local wins
+        ranked_teams.sort(key=lambda x: x[1], reverse=True)
+
+        # Iterate over the range of the length of the ranked_teams list
+        for index in range(len(ranked_teams)):
+            # Get the team name from the ranked_teams list
+            team = ranked_teams[index][0]
+            # Increment the corresponding index in the total_spots dictionary for the team
+            total_spots[team][index] += 1
+
+        # Create a results table from the total_wins dictionary
+        table = create_results_table(total_wins)
+
+        # If show_table is True, print the results table
+        if show_table:
+            print_results_table(table)
+
+        # If show_histogram is True, create a histogram using the statistics and total_spots dictionaries
+        if show_histogram:
+            create_histogram(statistics, total_spots)
+
+        # Return the results table
+        return table
+
 
 
 # Get real results
