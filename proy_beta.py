@@ -3,6 +3,7 @@ import random
 import numpy as np
 from scipy.stats import spearmanr
 import math
+import matplotlib.pyplot as plt
 
 
 # Load data from teams
@@ -155,8 +156,40 @@ def print_results_table(table):
     print(table.to_string(index=False))
 
 
+# Creates a histogram for the first team in the statistics dictionary
+# using the total_spots data.
+# The histogram displays the frequency of each spot for the team.
+def create_histogram(statistics, total_spots):
+    """
+    Parameters:
+    statistics (dict): A dictionary containing team statistics.
+    total_spots (dict): A dictionary containing the total spots for each team.
+
+    """
+    # Get the first team from the statistics dictionary
+    team0 = list(statistics.keys())[0]
+
+    # Create a histogram
+    plt.figure(figsize=(10, 6))  # Increase the size of the figure
+    plt.bar(total_spots[team0].keys(), total_spots[team0].values(), color='b', label='Frequency of Spots')
+
+    # Add labels and title
+    plt.xlabel('Spot', fontsize=14)  # Increase the font size
+    plt.ylabel('Frequency', fontsize=14)  # Increase the font size
+    plt.title('Histogram of Team Spots for ' + team0, fontsize=16)  # Add the team name to the title and increase the font size
+
+    # Add grid for better readability
+    plt.grid(True)
+
+    # Add legend
+    plt.legend()
+
+    # Show the plot
+    plt.show()
+
+
 # Get simulation results
-def get_sim_results(epsilon, game_simulations=100, show_table=False):
+def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histogram=False):
     statistics = load_data('2021-01-01', '2021-06-31')
     # Initialize a dictionary to store the total number of wins for each team
     total_wins = {}
@@ -178,6 +211,8 @@ def get_sim_results(epsilon, game_simulations=100, show_table=False):
     table = create_results_table(total_wins)
     if show_table:
         print_results_table(table)
+    if show_histogram:
+        create_histogram(statistics, total_wins)
     return table
 
 
@@ -277,7 +312,7 @@ def spearman_correlation(df_real, df_simulated):
 # Run the simulation
 def run_simulation(epsilon, game_simulations, show_table=False):
     real_results = get_real_results()  # Get the real results
-    simulated_results = get_sim_results(epsilon, game_simulations, show_table)  # Get the simulated results
+    simulated_results = get_sim_results(epsilon, game_simulations, show_table, True)  # Get the simulated results
 
     # Calculate the position distances between the real and simulated results
 
