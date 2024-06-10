@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1717899609.10073 "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" "Informe.pdf" "Informe" 1717899609.36747 0
+["pdflatex"] 1717985379.07905 "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" "Informe.pdf" "Informe" 1717985379.43862 0
   "/etc/texmf/web2c/texmf.cnf" 1684731669.91207 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" 1717899608.91112 7559 da9fc28ee2b28cf1daffcb3e6c9d59cb ""
+  "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" 1717985378.82028 9659 969d61637ef1767ac703558ff2165aba ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -22,11 +22,13 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm" 1136768653 1124 6c73e740cf17375f03eec0ee63599741 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1136768653 1116 933a60c408fc0a863a92debe84b2d294 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmti12.tfm" 1136768653 1484 ed72f8f5cf654cda15ecc8e32bfcbee5 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1248133631 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb" 1248133631 36741 fa121aac0049305630cf160b86157ee4 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1248133631 36118 fad905eba93cff5bce1e185fe980a177 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1248133631 31764 459c573c03a4949a528c2cc7f557e217 ""
   "/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty" 1576625273 7734 b98cbb34c81f667027c1e3ebdbfce34b ""
@@ -76,8 +78,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1715270380.30401 368426 99aa7317ad8123173d2e85930240aad7 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1715270385 6864678 45f8322a9cec10c08bfb51e9a059f36f ""
-  "Informe.aux" 1717899609.33713 1593 692b96e68e7cc5249d480c8440f07382 "pdflatex"
-  "Informe.tex" 1717899608.91112 7559 da9fc28ee2b28cf1daffcb3e6c9d59cb ""
+  "Informe.aux" 1717985379.38928 1593 59a39f5156fd691bfeee00ae48e22735 "pdflatex"
+  "Informe.tex" 1717985378.82028 9659 969d61637ef1767ac703558ff2165aba ""
   (generated)
   "Informe.aux"
   "Informe.log"

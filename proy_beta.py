@@ -202,10 +202,11 @@ def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histog
         for spot in range(len(statistics)):
             total_spots[team][spot] = 0
 
-    rate = 2
-
     count = 0
-    while epsilon < rate:
+    rate = 0
+    start = True
+    while epsilon < rate or start:
+        start = False
         # Run the simulation
         simulation_table = {}
         for team in statistics:
@@ -340,11 +341,41 @@ def spearman_correlation(df_real, df_simulated):
 
     return correlation
 
+def plot_final_positions(df_real, df_simulated):
+    # Sort the dataframes by 'Total Wins' in descending order and assign positions
+    df_real = df_real.sort_values('Total Wins', ascending=False)
+    df_real['Position'] = range(1, len(df_real) + 1)
+
+    df_simulated = df_simulated.sort_values('Total Wins', ascending=False)
+    df_simulated['Position'] = range(1, len(df_simulated) + 1)
+
+    # Create a new figure
+    plt.figure(figsize=(10, 6))
+
+    # Create a bar chart for the real positions
+    plt.bar(df_real['Team'], df_real['Position'], color='b', alpha=0.7, label='Real Positions')
+
+    # Create a bar chart for the simulated positions
+    plt.bar(df_simulated['Team'], df_simulated['Position'], color='r', alpha=0.7, label='Simulated Positions')
+
+    # Add a legend
+    plt.legend()
+
+    # Add labels and title
+    plt.xlabel('Teams')
+    plt.ylabel('Final Positions')
+    plt.title('Comparison of Real and Simulated Final Positions')
+
+    # Rotate x-axis labels for better visibility
+    plt.xticks(rotation=90)
+
+    # Show the plot
+    plt.show()
 
 # Run the simulation
 def run_simulation(epsilon, game_simulations, show_table=False):
     real_results = get_real_results()  # Get the real results
-    simulated_results = get_sim_results(epsilon, game_simulations, show_table, True)  # Get the simulated results
+    simulated_results = get_sim_results(epsilon, game_simulations, show_table, False)  # Get the simulated results
 
     # Calculate the position distances between the real and simulated results
 
@@ -369,3 +400,11 @@ print("Position distances:", result[0])
 print("Exact positions:", result[1])
 print("Top-n:", result[2])
 print("Spearman correlation:", result[3])
+
+
+# Get the real and simulated results
+real_results = get_real_results()  # Get the real results
+simulated_results = get_sim_results(epsilon, game_simulations, show_table, False)  # Get the simulated results
+
+# Compare the results
+plot_final_positions(real_results, simulated_results)
