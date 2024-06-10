@@ -375,7 +375,7 @@ def plot_final_positions(df_real, df_simulated):
 
 
 # Run the simulation
-def run_simulation(date=('2017-01-01', '2017-12-31', '2017-01-01', '2017-06-31'), epsilon=0.010206207261596576, game_simulations=100, show_table=False, show_histogram=True, num_teams=5):
+def run_simulation(date=('2017-01-01', '2017-12-31', '2017-01-01', '2017-06-31'), epsilon=0.0102, game_simulations=100, show_table=False, show_histogram=True, num_teams=5):
     
     real_results = get_real_results(date[0], date[1])  # Get the real results
     simulated_results = get_sim_results(date[2], date[3], epsilon, game_simulations, show_table, show_histogram, num_teams)  # Get the simulated results
@@ -392,16 +392,21 @@ def run_simulation(date=('2017-01-01', '2017-12-31', '2017-01-01', '2017-06-31')
     return results
 
 
-epsilon = 0.010206207261596576
+
+# Set the parameters
+date = ('2017-01-01', '2017-12-31', '2017-01-01', '2017-06-31')
+epsilon = 0.0102
 game_simulations = 200
 show_table = False
+show_histogram = True
+num_teams = 5
 
-result = run_simulation()
+result = run_simulation(date, epsilon, game_simulations, show_table, show_histogram, num_teams)
 
 print("\nResultados obtenidos con los parametros epsilon =", epsilon, " y simulaciones de juegos =", game_simulations)
-print("Position distances:", result[0])
-print("Exact positions:", result[1])
+print("Distancia entre posiciones:", result[0])
+print("Posiciones exactas:", result[1])
 print("Top-n:", result[2])
-print("Spearman correlation:", result[3])
+print("Correlación de Spearman:", result[3])
 
 plot_final_positions(result[4], result[5])

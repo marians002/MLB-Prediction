@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1717985379.07905 "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" "Informe.pdf" "Informe" 1717985379.43862 0
+["pdflatex"] 1717991397.78736 "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" "Informe.pdf" "Informe" 1717991398.1336 0
   "/etc/texmf/web2c/texmf.cnf" 1684731669.91207 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" 1717985378.82028 9659 969d61637ef1767ac703558ff2165aba ""
+  "/home/marian/Documents/MATCOM/Simulación/Proyecto 1/Informe/Informe.tex" 1717991397.58656 12190 06ca65cf847bb1e1ef65a76b45a4134f ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -78,8 +78,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1715270380.30401 368426 99aa7317ad8123173d2e85930240aad7 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1715270385 6864678 45f8322a9cec10c08bfb51e9a059f36f ""
-  "Informe.aux" 1717985379.38928 1593 59a39f5156fd691bfeee00ae48e22735 "pdflatex"
-  "Informe.tex" 1717985378.82028 9659 969d61637ef1767ac703558ff2165aba ""
+  "Informe.aux" 1717991398.09857 1593 9a7883896d036e440fd3f0309e183cc4 "pdflatex"
+  "Informe.tex" 1717991397.58656 12190 06ca65cf847bb1e1ef65a76b45a4134f ""
+  "bar_chart.png" 1717989586.71397 34803 8b0b413a6bee8197ce7728b2abae37eb ""
   (generated)
   "Informe.aux"
   "Informe.log"
