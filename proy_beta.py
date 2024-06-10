@@ -189,8 +189,8 @@ def create_histogram(statistics, total_spots, num_teams):
 
 
 # Get simulation results
-def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histogram=True, num_teams=5):
-    statistics = load_data('2021-01-01', '2021-06-31')
+def get_sim_results(s_date, e_date, epsilon, game_simulations, show_table, show_histogram, num_teams):
+    statistics = load_data(s_date, e_date)
     # Initialize a dictionary to store the total number of wins for each team
     total_wins = {}
     for team in statistics:
@@ -249,13 +249,13 @@ def get_sim_results(epsilon, game_simulations=100, show_table=False, show_histog
 
 
 # Get real results
-def get_real_results():
+def get_real_results(s_date, e_date):
     # Load the data
-    results = load_data('2021-01-01', '2021-12-31')
+    results = load_data(s_date, e_date)
 
     total_wins = {}
 
-    # Add the results to the total wins
+    # Add the results to te_datehe total wins
     for team1 in results:
         for team2 in results:
             if team1 != team2:
@@ -340,11 +340,44 @@ def spearman_correlation(df_real, df_simulated):
 
     return correlation
 
+# Plot the final positions in a bar chart
+def plot_final_positions(df_real, df_simulated):
+    # Sort the dataframes by 'Total Wins' in descending order and assign positions
+    df_real = df_real.sort_values('Total Wins', ascending=False)
+    df_real['Position'] = range(1, len(df_real) + 1)
+
+    df_simulated = df_simulated.sort_values('Total Wins', ascending=False)
+    df_simulated['Position'] = range(1, len(df_simulated) + 1)
+
+    # Create a new figure
+    plt.figure(figsize=(10, 6))
+
+    # Create a bar chart for the real positions
+    plt.bar(df_real['Team'], df_real['Position'], color='b', alpha=0.7, label='Real Positions')
+
+    # Create a bar chart for the simulated positions
+    plt.bar(df_simulated['Team'], df_simulated['Position'], color='r', alpha=0.7, label='Simulated Positions')
+
+    # Add a legend
+    plt.legend()
+
+    # Add labels and title
+    plt.xlabel('Teams')
+    plt.ylabel('Final Positions')
+    plt.title('Comparison of Real and Simulated Final Positions')
+
+    # Rotate x-axis labels for better visibility
+    plt.xticks(rotation=90)
+
+    # Show the plot
+    plt.show()
+
 
 # Run the simulation
-def run_simulation(epsilon, game_simulations, show_table=False):
-    real_results = get_real_results()  # Get the real results
-    simulated_results = get_sim_results(epsilon, game_simulations, show_table, True)  # Get the simulated results
+def run_simulation(date=('2017-01-01', '2017-12-31', '2017-01-01', '2017-06-31'), epsilon=0.010206207261596576, game_simulations=100, show_table=False, show_histogram=True, num_teams=5):
+    
+    real_results = get_real_results(date[0], date[1])  # Get the real results
+    simulated_results = get_sim_results(date[2], date[3], epsilon, game_simulations, show_table, show_histogram, num_teams)  # Get the simulated results
 
     # Calculate the position distances between the real and simulated results
 
@@ -353,7 +386,7 @@ def run_simulation(epsilon, game_simulations, show_table=False):
     top = top_n(real_results, simulated_results, 8)
     sp_corr = spearman_correlation(real_results, simulated_results)
 
-    results = [pos_dist, ex_pos, top, sp_corr]
+    results = [pos_dist, ex_pos, top, sp_corr, real_results, simulated_results]
 
     return results
 
@@ -362,10 +395,12 @@ epsilon = 0.010206207261596576
 game_simulations = 200
 show_table = False
 
-result = run_simulation(epsilon, game_simulations, show_table)
+result = run_simulation()
 
 print("\nResultados obtenidos con los parametros epsilon =", epsilon, " y simulaciones de juegos =", game_simulations)
 print("Position distances:", result[0])
 print("Exact positions:", result[1])
 print("Top-n:", result[2])
 print("Spearman correlation:", result[3])
+
+plot_final_positions(result[4], result[5])
